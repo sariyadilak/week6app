@@ -198,6 +198,30 @@ var highwaylayer;
 			// change the map zoom so that all the data is shown
 				mymap.fitBounds(highwaylayer.getBounds());
 		}
+		
+var formlayer;
+	function getForm(){
+		client = new XMLHttpRequest();
+		client.open('GET','http://developer.cege.ucl.ac.uk:30281/getGeoJSON/formdata/geom');
+		client.onreadystatechange = formResponse;
+		client.send();
+	}
+	
+	function formResponse(){
+	if(client.readyState == 4){
+		var formdata = client.responseText;
+		loadformlayer(formdata);
+		}
+	}
+
+	function loadformlayer(formdata){
+				// convert the text to JSON
+				var formjson = JSON.parse(formdata);
+				// add the JSON layer onto the map - it will appear using the default icons
+				formlayer = L.geoJson(formjson).addTo(mymap);
+			// change the map zoom so that all the data is shown
+				mymap.fitBounds(formlayer.getBounds());
+		}
 
 
 		// load the map
