@@ -154,7 +154,7 @@ document.getElementById('ajaxtest').innerHTML = xhr.responseText;
 var poilayer;
 	function getPOI(){
 		client = new XMLHttpRequest();
-		client.open('GET','http://developer.cege.ucl.ac.uk:30281/getPOI');
+		client.open('GET','http://developer.cege.ucl.ac.uk:30281/getGeoJSON/united_kingdom_poi/geom');
 		client.onreadystatechange = poiResponse;
 		client.send();
 	}
@@ -173,6 +173,30 @@ var poilayer;
 				poilayer = L.geoJson(poijson).addTo(mymap);
 			// change the map zoom so that all the data is shown
 				mymap.fitBounds(poilayer.getBounds());
+		}
+		
+var highwaylayer;
+	function getHighway(){
+		client = new XMLHttpRequest();
+		client.open('GET','http://developer.cege.ucl.ac.uk:30281/getGeoJSON/united_kingdom_highway/geom');
+		client.onreadystatechange = highwayResponse;
+		client.send();
+	}
+	
+	function highwayResponse(){
+	if(client.readyState == 4){
+		var highwaydata = client.responseText;
+		loadhighwaylayer(highwaydata);
+		}
+	}
+
+	function loadhighwaylayer(highwaydata){
+				// convert the text to JSON
+				var highwayjson = JSON.parse(highwaydata);
+				// add the JSON layer onto the map - it will appear using the default icons
+				highwaylayer = L.geoJson(highwayjson).addTo(mymap);
+			// change the map zoom so that all the data is shown
+				mymap.fitBounds(highwaylayer.getBounds());
 		}
 
 
